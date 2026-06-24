@@ -1,10 +1,20 @@
 from fastapi import FastAPI
-from routes.dish_routes import router as get_dishes
+from fastapi.middleware.cors import CORSMiddleware
+
+from routes.dish_routes import router
 
 app = FastAPI()
 
-app.include_router(get_dishes)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(router)
 
 @app.get("/")
 def root():
-    return {"message": "Dish dashboard api is running"}
+    return {"message": "API Running"}
